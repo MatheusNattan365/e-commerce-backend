@@ -4,7 +4,7 @@
 
 import express, { Request, Response } from "express";
 import * as userService from "../service/users.service";
-import { User, Users } from "../types/Users";
+import { User, Users } from "types/User";
 
 /**
  * Router Definition

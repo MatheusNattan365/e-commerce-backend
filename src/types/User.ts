@@ -9,3 +9,7 @@ export interface BaseUser {
 export interface User extends BaseUser {
     id: number;
 }
+
+export interface Users {
+    [key: number]: User;
+}
