@@ -1,9 +1,9 @@
 import User from "@models/User";
-import { User as IUser } from "types/User";
+import { BaseUser, User as IUser } from "types/User";
 
-export async function createNewUser(body: IUser): Promise<User> {
-    if (!body.email) {
-        throw new Error("Email is missing!");
+export async function createNewUser(body: BaseUser): Promise<User> {
+    if (!body.email || !body.password) {
+        throw new Error("Required fields are missing!");
     }
 
     return await User.create(body);

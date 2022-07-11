@@ -12,8 +12,12 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        confirmedEmail: {
+        password: {
             type: DataTypes.STRING,
+            allowNull: false,
+        },
+        confirmedEmail: {
+            type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
     },

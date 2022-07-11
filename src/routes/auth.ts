@@ -4,7 +4,7 @@
 
 import express, { Request, Response } from "express";
 import * as userService from "@services/users";
-import { User, Users } from "types/User";
+import { BaseUser, User, Users } from "types/User";
 
 /**
  * Router Definition
@@ -26,4 +26,14 @@ authRouter.get(
 authRouter.post("/sign-in", async (req: Request, res: Response) => {});
 
 // POST    - Sign-up
-authRouter.post("/sign-up", async (req: Request, res: Response) => {});
+authRouter.post("/sign-up", async (req: Request, res: Response) => {
+    try {
+        const user: BaseUser = req.body;
+
+        const newUser = await userService.createNewUser(user);
+
+        res.status(201).json(newUser);
+    } catch (e) {
+        res.status(500).send((e as any).message);
+    }
+});
