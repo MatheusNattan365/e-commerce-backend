@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { BaseUser } from "types/User";
 import sequelize from "../../config/sequelize";
 

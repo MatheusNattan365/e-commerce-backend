@@ -7,7 +7,10 @@ import cors from "cors";
 import helmet from "helmet";
 import { routes } from "./routes";
 import connection from "./config/sequelize";
-dotenv.config();
+import minioClient from "./config/minio.config";
+
+const db = connection;
+const mc = minioClient;
 
 /**
  * App Variables
