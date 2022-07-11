@@ -3,7 +3,7 @@
  */
 
 import express, { Request, Response } from "express";
-import * as userService from "../service/users.service";
+import * as userService from "@services/users";
 import { User, Users } from "types/User";
 
 /**

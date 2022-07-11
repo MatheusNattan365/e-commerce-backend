@@ -5,8 +5,8 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { sequelize } from "./db.config";
-
+import { routes } from "./routes";
+import connection from "./config/sequelize";
 dotenv.config();
 
 /**
@@ -28,20 +28,12 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use("/api/v1", routes);
 
 /**
  * Server Activation
  */
 
-app.listen(PORT, () => {
-    try {
-        Promise.resolve(sequelize.authenticate()).then((result) => {
-            console.log(
-                "Connection with DB has been established successfully."
-            );
-            console.log(`Listening on port ${PORT}`);
-        });
-    } catch (error) {
-        console.error("Unable to connect to the database:", error);
-    }
+app.listen(PORT, async () => {
+    console.log(`Listening on port ${PORT}`);
 });
