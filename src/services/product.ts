@@ -1,8 +1,9 @@
 import Product from "@models/Product";
-import { Product as IProduct } from "types/Product";
+import { BaseProduct, Product as IProduct } from "types/Product";
+import minioClient from "config/minio.config";
 
-export async function createNewProduct(body: IProduct): Promise<Product> {
-    if (!body.name && !body.description && !body.createdBy) {
+export async function createNewProduct(body: BaseProduct): Promise<Product> {
+    if (!body.name && !body.description) {
         throw new Error(
             "Some required field (name, description, createdBy) is missing!"
         );
@@ -11,6 +12,6 @@ export async function createNewProduct(body: IProduct): Promise<Product> {
     return await Product.create(body);
 }
 
-export async function getAllUsers(): Promise<Product[]> {
+export async function getAllProducts(): Promise<Product[]> {
     return Product.findAll();
 }

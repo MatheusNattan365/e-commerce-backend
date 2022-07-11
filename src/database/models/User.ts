@@ -1,6 +1,7 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import { BaseUser } from "types/User";
 import sequelize from "../../config/sequelize";
+import Product from "./Product";
 
 export default class User extends Model<BaseUser> {}
 

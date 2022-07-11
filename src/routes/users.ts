@@ -40,7 +40,7 @@ usersRouter.get("/", async (req: Request, res: Response) => {
     }
 });
 
-export { usersRouter };
+export default usersRouter;
 
 // POST items
 
