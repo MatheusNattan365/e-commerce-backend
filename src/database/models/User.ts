@@ -1,7 +1,6 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { BaseUser } from "types/User";
 import sequelize from "../../config/sequelize";
-import Product from "./Product";
 
 export default class User extends Model<BaseUser> {}
 
@@ -11,6 +10,7 @@ User.init(
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
         password: {
             type: DataTypes.STRING,
