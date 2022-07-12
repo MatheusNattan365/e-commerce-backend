@@ -6,7 +6,8 @@ import express, { Request, Response } from "express";
 import * as userService from "@services/users";
 import * as authService from "@services/auth";
 import { BaseUser, User, Users } from "types/User";
-
+import { checkJwt } from "../middleware/checkjwt";
+import { verifyToken } from "@services/jwt";
 /**
  * Router Definition
  */
@@ -20,7 +21,16 @@ export const authRouter = express.Router();
 // GET     - Confirm email
 authRouter.get(
     "/confirm-email/:jwt",
-    async (req: Request, res: Response) => {}
+    checkJwt,
+    async (req: Request, res: Response) => {
+        const user = res.locals.user;
+
+        if (!user) throw new Error("Something wrong with token");
+
+        const confirmedEmailUser = userService.confirmUserEmail(user.email);
+
+        res.redirect("http://localhost:7000/login");
+    }
 );
 
 // POST    - Sign-in

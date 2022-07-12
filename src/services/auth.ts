@@ -1,7 +1,9 @@
 import User from "@models/User";
 import * as userService from "@services/users";
+import { buildToken } from "./jwt";
 import { BaseUser, User as IUser } from "types/User";
 import { hashPassword, comparePassword } from "./bcrypt";
+import { transport } from "./nodemailer";
 
 export async function signUp(body: BaseUser): Promise<User> {
     if (!body.email || !body.password) {
@@ -10,7 +12,25 @@ export async function signUp(body: BaseUser): Promise<User> {
 
     body.password = await hashPassword(body.password).then((res) => res);
 
-    return await User.create(body);
+    const user = await User.create(body);
+
+    const jwt = buildToken(user.toJSON());
+
+    transport.sendMail(
+        {
+            from: "devx@devx.com",
+            to: body.email,
+            subject: "Confirm your email!",
+            html: `<a href="http://localhost:7000/api/v1/auth/confirm-email/${jwt}">Confirm Email</a>`,
+        },
+        (err, info) => {
+            if (err) throw new Error("Email not sended!");
+
+            console.log("Email sended!", info);
+        }
+    );
+
+    return user;
 }
 
 export async function signIn(login: {

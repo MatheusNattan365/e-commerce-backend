@@ -23,3 +23,19 @@ export async function getUserByEmail(email: string): Promise<User | null> {
         },
     });
 }
+export async function confirmUserEmail(email: string): Promise<User | null> {
+    await User.update(
+        { confirmedEmail: true },
+        {
+            where: {
+                email,
+            },
+        }
+    );
+
+    return await User.findOne({
+        where: {
+            email,
+        },
+    });
+}
