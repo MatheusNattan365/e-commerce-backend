@@ -31,7 +31,7 @@ productsRouter.post(
             if (req.files) {
                 const productPhotos = Object.values(req.files);
 
-                return await Promise.all(
+                return Promise.all(
                     productPhotos.map(async (productPhoto) => {
                         const productPhotoName = `${
                             productPhoto.filename

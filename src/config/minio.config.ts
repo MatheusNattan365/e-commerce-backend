@@ -1,13 +1,16 @@
 import * as Minio from "minio";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Instantiate the minio client with the endpoint
 // and access keys as shown below.
 const minioClient = new Minio.Client({
-    endPoint: "localhost",
-    port: 9000,
+    endPoint: process.env.MINIO_HOST!,
+    port: parseInt(process.env.MINIO_PORT!, 10),
     useSSL: false,
-    accessKey: "AKIAIOSFODNN7EXAMPLE",
-    secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+    accessKey: process.env.MINIO_ACCESS_KEY!,
+    secretKey: process.env.MINIO_SECRET_KEY!,
 });
 
 Promise.resolve(minioClient.bucketExists("devx")).then((res) => {
