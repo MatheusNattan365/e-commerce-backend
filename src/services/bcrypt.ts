@@ -8,24 +8,12 @@ const bcryptConfig = {
 };
 
 export async function hashPassword(password: string): Promise<string> {
-    let hashedPassword = "";
-
-    await bcrypt
-        .hash(password, bcryptConfig.salts)
-        .then((res) => (hashedPassword = res));
-
-    return hashedPassword;
+    return await bcrypt.hash(password, bcryptConfig.salts);
 }
 
 export async function comparePassword(
     password: string,
     hashedPassword: string
 ): Promise<boolean> {
-    let passwordMatch = false;
-
-    await bcrypt
-        .compare(password, hashedPassword)
-        .then((res) => (passwordMatch = res));
-
-    return passwordMatch;
+    return await bcrypt.compare(password, hashedPassword);
 }

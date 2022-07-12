@@ -10,7 +10,7 @@ export async function signUp(body: BaseUser): Promise<User> {
         throw new Error("Required fields are missing!");
     }
 
-    body.password = await hashPassword(body.password).then((res) => res);
+    body.password = await hashPassword(body.password);
 
     const user = await User.create(body);
 
