@@ -3,6 +3,7 @@ export interface BaseProduct {
     thumbnailUrls?: string[];
     description: string;
     publish_at: Date;
+    price: number;
 }
 
 export interface Product extends BaseProduct {

@@ -23,6 +23,10 @@ Product.init(
             type: DataTypes.DATE,
             defaultValue: new Date(),
         },
+        price: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+        },
     },
     {
         // Other model options go here

@@ -7,7 +7,7 @@ import * as userService from "@services/users";
 import * as authService from "@services/auth";
 import { BaseUser, User, Users } from "types/User";
 import { checkJwt } from "../middleware/checkjwt";
-import { verifyToken } from "@services/jwt";
+import { buildToken } from "@services/jwt";
 /**
  * Router Definition
  */
@@ -29,7 +29,7 @@ authRouter.get(
 
         const confirmedEmailUser = userService.confirmUserEmail(user.email);
 
-        res.redirect("http://localhost:7000/login");
+        res.redirect("http://localhost:3000/auth/sign-in");
     }
 );
 
@@ -37,8 +37,14 @@ authRouter.get(
 authRouter.post("/sign-in", async (req: Request, res: Response) => {
     try {
         const login: { email: string; password: string } = req.body;
+        console.log(req.body);
+        const user = await authService.signIn(login);
 
-        const jwt = await authService.signIn(login);
+        if (typeof user === "string") {
+            return res.status(200).json({ issue: user });
+        }
+
+        const jwt = buildToken(user);
 
         res.status(201).json(jwt);
     } catch (e) {
