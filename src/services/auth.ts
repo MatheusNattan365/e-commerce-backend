@@ -5,16 +5,20 @@ import { BaseUser, User as IUser } from "types/User";
 import { hashPassword, comparePassword } from "./bcrypt";
 import { sendConfirmationEmail, transport } from "./nodemailer";
 
-export async function signUp(body: BaseUser): Promise<User> {
+export async function signUp(body: BaseUser): Promise<User | string> {
     if (!body.email || !body.password) {
-        throw new Error("Required fields are missing!");
+        return "Required fields are missing!";
     }
+
+    const userAlreadyExist = await userService.getUserByEmail(body.email);
+
+    if (userAlreadyExist) return "The email is in use!";
 
     body.password = await hashPassword(body.password);
 
     const user = await User.create(body);
 
-    const jwt = buildToken(user);
+    const jwt = buildToken(user.toJSON());
 
     sendConfirmationEmail(body.email, jwt);
 

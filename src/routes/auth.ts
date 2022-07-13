@@ -46,7 +46,7 @@ authRouter.post("/sign-in", async (req: Request, res: Response) => {
 
         const jwt = buildToken(user);
 
-        res.status(201).json(jwt);
+        res.status(201).json({ user, jwt });
     } catch (e) {
         res.status(500).send((e as any).message);
     }
@@ -59,7 +59,11 @@ authRouter.post("/sign-up", async (req: Request, res: Response) => {
 
         const newUser = await authService.signUp(user);
 
-        res.status(201).json(newUser);
+        if (typeof newUser === "string") {
+            return res.status(200).json({ issue: newUser });
+        }
+
+        res.status(200).json(newUser);
     } catch (e) {
         res.status(500).send((e as any).message);
     }
