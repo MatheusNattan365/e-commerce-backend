@@ -3,7 +3,7 @@ import { BaseProduct, Product as IProduct } from "types/Product";
 import minioClient, { getAssignUrls } from "config/minio.config";
 
 export async function createNewProduct(
-    body: BaseProduct
+    body: Partial<IProduct>
 ): Promise<BaseProduct> {
     if (!body.name && !body.description) {
         throw new Error(
@@ -64,4 +64,19 @@ export async function getAllProductsByUserId(
     );
 
     return productsWithUrls;
+}
+
+export async function updateProductById(
+    productId: string,
+    updates: Product
+): Promise<Product | null> {
+    const id = parseInt(productId, 10);
+
+    await Product.update(updates, {
+        where: {
+            id,
+        },
+    });
+
+    return await Product.findByPk(productId);
 }

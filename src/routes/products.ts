@@ -90,6 +90,18 @@ productsRouter.get(
     }
 );
 
+// GET      - updateProductById
+productsRouter.patch("/:id", async (req: Request, res: Response) => {
+    try {
+        await productsService.updateProductById(
+            req.params.id,
+            req.body.product
+        );
+    } catch (error) {
+        res.status(500).json({ erro: "Something wrong with update product" });
+    }
+});
+
 export default productsRouter;
 
 // POST items

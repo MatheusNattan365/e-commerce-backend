@@ -1,9 +1,8 @@
 import { DataTypes, ForeignKey, Model } from "sequelize";
-import { BaseProduct } from "types/Product";
 import sequelize from "../../config/sequelize";
 import User from "./User";
 
-export default class Product extends Model<BaseProduct> {}
+export default class Product extends Model {}
 
 Product.init(
     {
