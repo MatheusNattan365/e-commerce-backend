@@ -25,4 +25,10 @@ Promise.resolve(minioClient.bucketExists("devx")).then((res) => {
     return minioClient;
 });
 
+export function getAssignUrls(names: string[]): Promise<string[]> {
+    return Promise.all(
+        names.map((name) => minioClient.presignedUrl("GET", "devx", name))
+    );
+}
+
 export default minioClient;

@@ -1,17 +1,67 @@
 import Product from "@models/Product";
 import { BaseProduct, Product as IProduct } from "types/Product";
-import minioClient from "config/minio.config";
+import minioClient, { getAssignUrls } from "config/minio.config";
 
-export async function createNewProduct(body: BaseProduct): Promise<Product> {
+export async function createNewProduct(
+    body: BaseProduct
+): Promise<BaseProduct> {
     if (!body.name && !body.description) {
         throw new Error(
             "Some required field (name, description, createdBy) is missing!"
         );
     }
 
-    return await Product.create(body);
+    const newProduct = (await Product.create(body)).toJSON();
+
+    if (newProduct.thumbnailUrls?.length) {
+        newProduct.thumbnailUrls = await getAssignUrls(
+            newProduct.thumbnailUrls
+        );
+    }
+
+    return newProduct;
 }
 
-export async function getAllProducts(): Promise<Product[]> {
-    return Product.findAll();
+export async function getAllProducts(): Promise<BaseProduct[]> {
+    const allProducts = await Product.findAll();
+
+    const products = allProducts.map((product) => product.toJSON());
+
+    const productsWithUrls = Promise.all(
+        products.map(async (product) => {
+            if (product.thumbnailUrls) {
+                product.thumbnailUrls = await getAssignUrls(
+                    product.thumbnailUrls
+                );
+            }
+            return product;
+        })
+    );
+
+    return productsWithUrls;
+}
+
+export async function getAllProductsByUserId(
+    UserId: number
+): Promise<BaseProduct[]> {
+    const allProducts = await Product.findAll({
+        where: {
+            UserId,
+        },
+    });
+
+    const products = allProducts.map((product) => product.toJSON());
+
+    const productsWithUrls = Promise.all(
+        products.map(async (product) => {
+            if (product.thumbnailUrls) {
+                product.thumbnailUrls = await getAssignUrls(
+                    product.thumbnailUrls
+                );
+            }
+            return product;
+        })
+    );
+
+    return productsWithUrls;
 }

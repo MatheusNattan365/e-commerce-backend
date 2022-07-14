@@ -44,7 +44,6 @@ productsRouter.post(
                         );
 
                         product.thumbnailUrls.push(productPhotoName);
-                        // console.log("==@ln46", product);
                     })
                 )
                     .then(() => productsService.createNewProduct(product))
@@ -70,6 +69,26 @@ productsRouter.get("/", async (req: Request, res: Response) => {
         res.status(500).send((e as any).message);
     }
 });
+
+// GET      - allProductsByUserId
+productsRouter.get(
+    "/by-user-id/:userId",
+    async (req: Request, res: Response) => {
+        try {
+            if (!req.params.userId)
+                return res.status(500).json("UserId not provided");
+            const userId = parseInt(req.params.userId, 10);
+
+            const allusers = await productsService.getAllProductsByUserId(
+                userId
+            );
+
+            res.status(201).json(allusers);
+        } catch (e) {
+            res.status(500).send((e as any).message);
+        }
+    }
+);
 
 export default productsRouter;
 

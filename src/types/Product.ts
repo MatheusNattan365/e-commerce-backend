@@ -4,6 +4,7 @@ export interface BaseProduct {
     description: string;
     publish_at: Date;
     price: number;
+    UserId: number;
 }
 
 export interface Product extends BaseProduct {
